@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Bencode Online</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+    <link href="style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <script defer src="app.bundle.js"></script>
+
+    <nav class="navbar fixed-top navbar-light bg-light">
+      <a class="navbar-brand" href="">Bencode Online</a>
+      <div class="navbar-nav">
+        <a class="nav-link active" href="#">
+          <img alt="GitHub logo" src="https://unpkg.com/simple-icons@latest/icons/github.svg" height="24">
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div>
+
+        <p>
+          To decode a bencoded file (mostly *.torrent file), you can either drag and drop the file to the editor below or press the "Open file..." button and select your file.<br/>
+          To encode, paste JSON representation of the structure to the editor below and press the "Save (bencode it)" button.
+        </p>
+
+        <form>
+
+          <div class="row">
+            <label>
+            Bencoded structure represented in JSON format:
+            </label>
+            <div class="form-control" id="jsonEditor"></div>
+          </div>
+
+          <div class="row">
+            <div class="btn-group w-100" role="group" aria-label="buttons group">
+              <button type="button" class="btn btn-primary w-100" id="openfileButton">Open file...</button>
+              <button type="button" class="btn btn-primary w-100" id="saveButton">Save (bencode it)</button>
+              <input type="file" id="fileInput" style="display: none;"/>
+            </div>
+          </div>
+
+        </form>
+
+        <br/>
+        <p>
+          References:<br/>
+          1. <a href="https://en.wikipedia.org/wiki/Bencode">Bencode - Wikipedia</a><br/>
+          2. <a href="https://json.org/">JSON.org</a>
+        </p>
+
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-49283121-10"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-49283121-10');
+    </script>
+
+  </body>
+</html>
