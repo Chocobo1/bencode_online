@@ -7,7 +7,7 @@ This project uses [npm](https://www.npmjs.com/), install it first!
 Then do:
 ```shell
 cd <project_directory>
-npm install
+npm install -D
 npm run build
 ```
 
