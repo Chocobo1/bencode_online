@@ -1,11 +1,11 @@
 'use strict';
 
-const bencode = require('bencode');
-const fileSaver = require('file-saver');
+import bencode from 'bencode';
+import fileSaver from 'file-saver';
 
-const ace = require('brace');
-require('brace/mode/json');
-require('brace/ext/searchbox');
+import ace from 'ace-builds/src-min-noconflict/ace';
+import 'ace-builds/src-min-noconflict/mode-json';
+import 'ace-builds/src-min-noconflict/ext-searchbox';
 
 /// helper functions
 

@@ -13,7 +13,8 @@ module.exports =
     new CopyWebpackPlugin(
     [
       'src/index.html',
-      'src/style.css'
+      'src/style.css',
+      'node_modules/ace-builds/src-min-noconflict/worker-json.js'
     ])
   ],
   output:
