@@ -4,4 +4,5 @@ body {
 
 #jsonEditor {
   height: 26rem;
+  z-index: 0;
 }
