@@ -3,6 +3,6 @@ body {
 }
 
 #jsonEditor {
-  height: 26rem;
+  height: 75vh;
   z-index: 0;
 }
