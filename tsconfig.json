@@ -1,0 +1,11 @@
+{
+    "compilerOptions":
+    {
+        "esModuleInterop": true,
+        "moduleResolution": "Node",
+        "noImplicitAny": true,
+        "strict": true,
+        "removeComments": true,
+        "target": "ES6"
+    }
+}

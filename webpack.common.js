@@ -6,7 +6,17 @@ module.exports =
 {
   entry:
   {
-    app: './src/index.js',
+    app: './src/main.ts',
+  },
+  module:
+  {
+    rules:
+    [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader"
+      }
+    ]
   },
   plugins:
   [

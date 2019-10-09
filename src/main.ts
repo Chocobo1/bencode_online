@@ -1,60 +1,56 @@
-'use strict';
-
 import bencode from 'bencode';
 import fileSaver from 'file-saver';
 
-import ace from 'ace-builds/src-min-noconflict/ace';
+import ace from 'ace-builds';
 import 'ace-builds/src-min-noconflict/mode-json';
 import 'ace-builds/src-min-noconflict/ext-searchbox';
 
 /// helper functions
 
-function isString(s)
+function isString(s: object): boolean
 {
   return (Object.prototype.toString.call(s) === "[object String]");
 }
 
-function toArrayBuffer(blob)
+function loadFile(blob: Blob): Promise<ArrayBuffer>
 {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (e) => { resolve(e.target.result); };
+    reader.onload = (e: any) => { resolve(e.target.result); };
     reader.readAsArrayBuffer(blob);
   });
 }
 
-function decodeString(data)
+function decodeString(data: ArrayBuffer): string
 {
-  const isStringValid = (str) =>
+  const isStringValid = (str: string): boolean =>
   {
     const replacementChar = '\uFFFD';  // U+FFFD REPLACEMENT CHARACTER
     return (str.indexOf(replacementChar) === -1);
   }
 
-  const buf = Buffer.from(data);
-
-  const str = buf.toString();
+  const str = data.toString();
   if (isStringValid(str))
     return str;
 
   // cannot convert to a valid string
   // print data as hex array
-  const bufferToHexstring = (buf) =>
+  const bufferToHexstring = (buf: Buffer): string =>
   {
     // example: <hex>0A 0B 0C ...</hex>
     const hexStr = buf.toString('hex').toUpperCase();
 
-    var str = "";
-    for (var i = 0; i < hexStr.length; i += 2)
+    let str = "";
+    for (let i = 0; i < hexStr.length; i += 2)
       str += (hexStr.substr(i, 2) + " ");
     str = ("<hex>" + str.trim() + "</hex>");
     return str;
   }
 
-  return bufferToHexstring(buf);
+  return bufferToHexstring(Buffer.from(data));
 }
 
-function bytearrayToString(obj)
+function bytearrayToString(obj: Record<string, any>): object
 {
   // traverse through obj
   for (const key in obj)
@@ -81,15 +77,15 @@ function bytearrayToString(obj)
   return obj;
 }
 
-function stringToBytearray(obj)
+function stringToBytearray(obj: Record<string, any>): object
 {
-  const isHexArray = (str) =>
+  const isHexArray = (str: string): boolean =>
   {
     const re = /<hex>[0-9a-f ]+<\/hex>/gi;
     return re.test(str);
   }
 
-  const hexstringToBuffer = (hex) =>
+  const hexstringToBuffer = (hex: string): Buffer =>
   {
     const str = hex.substring(5, (hex.length - 6)).replace(/ /g, "");
     return Buffer.from(str, 'hex');
@@ -124,46 +120,46 @@ function stringToBytearray(obj)
 
 /// End of helper functions
 
-function main()
+function main(): void
 {
   // editor configs
-  const jsonEditor = document.getElementById('jsonEditor');
+  const jsonEditor = document.getElementById('jsonEditor')!;
   const editor = ace.edit(jsonEditor);
   editor.getSession().setMode('ace/mode/json');
   editor.setShowPrintMargin(false);
-  editor.setFontSize(14);
+  editor.setFontSize("14px");
 
   // Characters stop showing up after the 10000th charater in a line
   // https://github.com/ajaxorg/ace/issues/3983
-  editor.renderer.$textLayer.MAX_LINE_LENGTH=Infinity;
+  (<any> editor.renderer).$textLayer.MAX_LINE_LENGTH=Infinity;
 
-  function setEditorText(str)
+  function setEditorText(str: string): void
   {
     editor.setValue(str);
   }
 
-  jsonEditor.addEventListener('dragover', (ev) => { if (ev.preventDefault) ev.preventDefault(); });
-  jsonEditor.addEventListener('dragenter', (ev) => { if (ev.preventDefault) ev.preventDefault(); });
-  jsonEditor.addEventListener("drop", (ev) => {
+  jsonEditor.addEventListener('dragover', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
+  jsonEditor.addEventListener('dragenter', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
+  jsonEditor.addEventListener("drop", (ev: DragEvent) => {
     if (ev.preventDefault)
       ev.preventDefault();
-    handleFilesInput(ev.dataTransfer.files);
+    handleFilesInput(ev.dataTransfer!.files);
   });
 
-  const fileInput = document.getElementById('fileInput');
-  fileInput.addEventListener("change", function() {
-    handleFilesInput(this.files);
+  const fileInput = document.getElementById('fileInput')!;
+  fileInput.addEventListener("change", function(this: HTMLInputElement) {
+    handleFilesInput(this.files!);
   });
 
-  async function handleFilesInput(files)
+  async function handleFilesInput(files: FileList): Promise<void>
   {
     setEditorText("");
 
     // only handle the first file
     const fileBlob = files[0];
-    const buf = await toArrayBuffer(fileBlob);
+    const buf = Buffer.from(await loadFile(fileBlob));
 
-    var decoded = "";
+    let decoded = "";
     try
     {
       decoded = bencode.decode(buf);
@@ -178,23 +174,23 @@ function main()
 
     const result = bytearrayToString(Object.assign({}, decoded));
     setEditorText(JSON.stringify(result, null, 3) + "\n");
-    editor.gotoLine(0, 0);
-    editor.scrollToLine(0);
+    editor.gotoLine(0, 0, undefined!);
+    editor.scrollToLine(0, undefined!, undefined!, undefined!);
   }
 
-  const openfileButton = document.getElementById("openfileButton");
+  const openfileButton = document.getElementById("openfileButton")!;
   openfileButton.addEventListener("click", () => {
-    const fileInput = document.getElementById('fileInput');
+    const fileInput = document.getElementById('fileInput')!;
     fileInput.click();
   });
 
-  const saveBtn = document.getElementById("saveButton");
+  const saveBtn = document.getElementById("saveButton")!;
   saveBtn.addEventListener("click", () => {
     const text = editor.getValue();
     if (text.length === 0)
       return;
 
-    var data = {};
+    let data: Buffer;
     try
     {
       const obj = JSON.parse(text);
