@@ -13,20 +13,20 @@
   "author": "Chocobo1",
   "license": "MIT",
   "dependencies": {
-    "ace-builds": "^1.4.6",
+    "ace-builds": "^1.4.7",
     "bencode": "^2.0.1",
     "file-saver": "^2.0.2"
   },
   "devDependencies": {
     "@types/bencode": "^2.0.0",
     "@types/file-saver": "^2.0.1",
-    "copy-webpack-plugin": "^5.0.4",
-    "ts-loader": "^6.2.0",
-    "typescript": "^3.6.4",
+    "copy-webpack-plugin": "^5.0.5",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.41.0",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.2.2"
   }
 }
