@@ -9,7 +9,7 @@
     <title>Bencode Online</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
@@ -36,47 +36,46 @@
     </nav>
 
     <div class="container">
-      <div>
+      <form>
+        <div class="row">
+          <label>
+          Bencoded structure represented in JSON format:
+          </label>
+          <div class="form-control" id="jsonEditor"></div>
+        </div>
 
-        <p>
-          To decode a bencoded file (mostly *.torrent file), you can either drag and drop the file to the editor below or press the "Open file..." button and select your file.<br/>
-          To encode, paste JSON representation of the structure to the editor below and press the "Save (bencode it)" button.
-        </p>
-
-        <form>
-
-          <div class="row">
-            <label>
-            Bencoded structure represented in JSON format:
-            </label>
-            <div class="form-control" id="jsonEditor"></div>
+        <div class="row">
+          <div class="btn-group w-100" role="group" aria-label="buttons group">
+            <button type="button" class="btn btn-primary" id="openfileButton">Open file...</button>
+            <button type="button" class="btn btn-primary" id="saveButton">Save (bencode it)</button>
+            <input type="file" id="fileInput" style="display: none;"/>
           </div>
+        </div>
+      </form>
 
-          <div class="row">
-            <div class="btn-group w-100" role="group" aria-label="buttons group">
-              <button type="button" class="btn btn-primary w-100" id="openfileButton">Open file...</button>
-              <button type="button" class="btn btn-primary w-100" id="saveButton">Save (bencode it)</button>
-              <input type="file" id="fileInput" style="display: none;"/>
-            </div>
-          </div>
+      <br/>
 
-        </form>
+      <p>
+        <b>Instructions:</b><br/>
+        To decode a bencoded file (mostly *.torrent file), you can either drag and drop the file to the editor below or press the "Open file..." button and select your file.<br/>
+        To encode, paste JSON representation of the structure to the editor below and press the "Save (bencode it)" button.<br/>
+        Still not clear about what it does? <button type="button" class="btn btn-primary" id="loadExampleButton">Click me to load an example file</button>
+      </p>
 
-        <br/>
-        <p>
-          References:<br/>
-          1. <a href="https://en.wikipedia.org/wiki/Bencode">Bencode - Wikipedia</a><br/>
-          2. <a href="https://json.org/">JSON.org</a>
-        </p>
-
-      </div>
+      <br/>
+      <p>
+        References:<br/>
+        1. <a href="https://en.wikipedia.org/wiki/Bencode">Bencode - Wikipedia</a><br/>
+        2. <a href="https://json.org/">JSON.org</a><br/>
+        3. <a href="bbb_sunflower_1080p_60fps_normal.mp4.torrent">Source of the example file</a>
+      </p>
     </div>
 
     <!-- Bootstrap core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
@@ -89,6 +88,5 @@
       gtag('js', new Date());
       gtag('config', 'UA-49283121-10');
     </script>
-
   </body>
 </html>
