@@ -24,7 +24,8 @@ module.exports =
     [
       'src/index.html',
       'src/style.css',
-      'node_modules/ace-builds/src-min-noconflict/worker-json.js'
+      'node_modules/ace-builds/src-min-noconflict/worker-json.js',
+      'src/bbb_sunflower_1080p_60fps_normal.mp4.torrent'
     ])
   ],
   output:

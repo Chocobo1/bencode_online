@@ -133,9 +133,36 @@ function main(): void
   // https://github.com/ajaxorg/ace/issues/3983
   (<any> editor.renderer).$textLayer.MAX_LINE_LENGTH=Infinity;
 
-  function setEditorText(str: string): void
+  const loadData = (fileName: string, data: Buffer): void =>
   {
-    editor.setValue(str);
+    let decoded = "";
+    try
+    {
+      decoded = bencode.decode(data);
+    }
+    catch(e)
+    {
+      editor.setValue("Error: "
+        + "\"" + fileName + "\""
+        + " is not a valid bencoded file\n");
+      return;
+    }
+
+    const result = bytearrayToString(Object.assign({}, decoded));
+    editor.setValue(JSON.stringify(result, null, 3) + "\n");
+    editor.gotoLine(0, 0, undefined!);
+    editor.scrollToLine(0, undefined!, undefined!, undefined!);
+  }
+
+  const handleFilesInput = async (files: FileList): Promise<void> =>
+  {
+    editor.setValue("");
+
+    // only handle the first file
+    const fileBlob = files[0];
+    const buf = Buffer.from(await loadFile(fileBlob));
+
+    loadData(fileBlob.name, buf);
   }
 
   jsonEditor.addEventListener('dragover', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
@@ -150,33 +177,6 @@ function main(): void
   fileInput.addEventListener("change", function(this: HTMLInputElement) {
     handleFilesInput(this.files!);
   });
-
-  async function handleFilesInput(files: FileList): Promise<void>
-  {
-    setEditorText("");
-
-    // only handle the first file
-    const fileBlob = files[0];
-    const buf = Buffer.from(await loadFile(fileBlob));
-
-    let decoded = "";
-    try
-    {
-      decoded = bencode.decode(buf);
-    }
-    catch(e)
-    {
-      setEditorText("Error: "
-        + "\"" + fileBlob.name + "\""
-        + " is not a valid bencoded file\n");
-      return;
-    }
-
-    const result = bytearrayToString(Object.assign({}, decoded));
-    setEditorText(JSON.stringify(result, null, 3) + "\n");
-    editor.gotoLine(0, 0, undefined!);
-    editor.scrollToLine(0, undefined!, undefined!, undefined!);
-  }
 
   const openfileButton = document.getElementById("openfileButton")!;
   openfileButton.addEventListener("click", () => {
@@ -205,6 +205,22 @@ function main(): void
 
     const blob = new Blob([data], {type: 'application/octet-stream'});
     fileSaver.saveAs(blob, "file");
+  });
+
+  const loadExampleBtn = document.getElementById("loadExampleButton")!;
+  loadExampleBtn.addEventListener("click", () => {
+    const exampleFileName = "bbb_sunflower_1080p_60fps_normal.mp4.torrent";
+
+    const xreq = new XMLHttpRequest();
+    xreq.onreadystatechange = () => {
+      if ((xreq.readyState !== XMLHttpRequest.DONE) || (xreq.status !== 200))
+        return;
+
+      loadData(exampleFileName, xreq.response);
+    };
+    xreq.open("GET", exampleFileName);
+    xreq.responseType = "arraybuffer";
+    xreq.send();
   });
 }
 
