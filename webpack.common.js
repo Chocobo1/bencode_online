@@ -20,13 +20,15 @@ module.exports =
   },
   plugins:
   [
-    new CopyWebpackPlugin(
-    [
-      'src/index.html',
-      'src/style.css',
-      'node_modules/ace-builds/src-min-noconflict/worker-json.js',
-      'src/bbb_sunflower_1080p_60fps_normal.mp4.torrent'
-    ])
+    new CopyWebpackPlugin({
+      patterns:
+      [
+        { from: 'src/index.html' },
+        { from: 'src/style.css' },
+        { from: 'node_modules/ace-builds/src-min-noconflict/worker-json.js' },
+        { from: 'src/bbb_sunflower_1080p_60fps_normal.mp4.torrent' }
+      ]
+    })
   ],
   output:
   {
