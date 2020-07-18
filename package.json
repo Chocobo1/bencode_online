@@ -13,19 +13,19 @@
   "author": "Chocobo1",
   "license": "MIT",
   "dependencies": {
-    "ace-builds": "^1.4.11",
+    "ace-builds": "^1.4.12",
     "bencode": "^2.0.1",
     "file-saver": "^2.0.2"
   },
   "devDependencies": {
     "@types/bencode": "^2.0.0",
     "@types/file-saver": "^2.0.1",
-    "copy-webpack-plugin": "^6.0.2",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.5",
+    "copy-webpack-plugin": "^6.0.3",
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^5.0.9"
   }
 }
