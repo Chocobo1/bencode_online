@@ -32,6 +32,7 @@ encode.getType = function (value) {
   if (value instanceof Number) return 'number'
   if (value instanceof Boolean) return 'boolean'
   if (value instanceof ArrayBuffer) return 'arraybuffer'
+  if (value instanceof Map) return 'map'
   return typeof value
 }
 
@@ -47,6 +48,7 @@ encode._encode = function (buffers, data) {
     case 'boolean': encode.number(buffers, data); break
     case 'arraybufferview': encode.buffer(buffers, Buffer.from(data.buffer, data.byteOffset, data.byteLength)); break
     case 'arraybuffer': encode.buffer(buffers, Buffer.from(data)); break
+    case 'map': encode._map(buffers, data); break
   }
 }
 
@@ -94,6 +96,23 @@ encode.dict = function (buffers, data) {
     if (data[k] == null) continue
     encode.string(buffers, k)
     encode._encode(buffers, data[k])
+  }
+
+  buffers.push(buffE)
+}
+
+encode._map = function (buffers, data) {
+  buffers.push(buffD)
+
+  // fix for issue #13 - sorted dicts
+  const keys = []
+  for (const iter = data.keys(); val = iter.next().value; )
+    keys.push(val);
+  keys.sort(Buffer.compare)
+
+  for (const key of keys) {
+    encode.buffer(buffers, key)
+    encode._encode(buffers, data.get(key))
   }
 
   buffers.push(buffE)

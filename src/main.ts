@@ -21,21 +21,15 @@ function loadFile(blob: Blob): Promise<ArrayBuffer>
   });
 }
 
-function decodeString(data: ArrayBuffer): string
+function tryEncodeHexstring(data: ArrayBuffer): string
 {
-  const isStringValid = (str: string): boolean =>
+  const isValidUtf8String = (str: string): boolean =>
   {
     const replacementChar = '\uFFFD';  // U+FFFD REPLACEMENT CHARACTER
     return (str.indexOf(replacementChar) === -1);
   }
 
-  const str = data.toString();
-  if (isStringValid(str))
-    return str;
-
-  // cannot convert to a valid string
-  // print data as hex array
-  const bufferToHexstring = (buf: Buffer): string =>
+  const encodeToHexstring = (buf: Buffer): string =>
   {
     // example: <hex>0A 0B 0C ...</hex>
     const hexStr = buf.toString('hex').toUpperCase();
@@ -47,75 +41,157 @@ function decodeString(data: ArrayBuffer): string
     return str;
   }
 
-  return bufferToHexstring(Buffer.from(data));
+  const str = data.toString();
+  return isValidUtf8String(str)
+    ? str
+    : encodeToHexstring(Buffer.from(data));
 }
 
-function bytearrayToString(obj: Record<string, any>): object
+function tryDecodeHexstring(str: string): Buffer
 {
-  // traverse through obj
-  for (const key in obj)
-  {
-    const val = obj[key];
-
-    if (val instanceof Number)
-    {
-    }
-    else if (val instanceof Uint8Array)
-    {
-      obj[key] = decodeString(val);
-    }
-    else if (val instanceof Array)
-    {
-      bytearrayToString(val);
-    }
-    else if (val instanceof Object)
-    {
-      bytearrayToString(val);
-    }
-  }
-
-  return obj;
-}
-
-function stringToBytearray(obj: Record<string, any>): object
-{
-  const isHexArray = (str: string): boolean =>
+  const isHexstring = (str: string): boolean =>
   {
     const re = /<hex>[0-9a-f ]+<\/hex>/gi;
     return re.test(str);
   }
 
-  const hexstringToBuffer = (hex: string): Buffer =>
+  const decodeToBuffer = (hex: string): Buffer =>
   {
     const str = hex.substring(5, (hex.length - 6)).replace(/ /g, "");
     return Buffer.from(str, 'hex');
   }
 
-  for (const key in obj)
-  {
-    const val = obj[key];
+  return isHexstring(str)
+    ? decodeToBuffer(str)
+    : Buffer.from(str);
+}
 
-    if (val instanceof Number)
+function encodeToArray(data: Array<any>): Array<any>
+{
+  const ret = [];
+
+  for (const val of data)
+  {
+    if (typeof val === "number")
     {
+      ret.push(val);
     }
-    else if (isString(val))
+    else if (val instanceof Uint8Array)
     {
-      if (isHexArray(val))
-        obj[key] = hexstringToBuffer(val);
-      else
-        obj[key] = Buffer.from(val);
+      ret.push(tryEncodeHexstring(val));
     }
     else if (val instanceof Array)
     {
-      stringToBytearray(val);
+      ret.push(encodeToArray(val));
     }
-    else if (val instanceof Object)
+    else if (val instanceof Map)
     {
-      stringToBytearray(val);
+      ret.push(encodeToObject(val));
+    }
+    else
+    {
+      //throw new Error("Type unhandled: " + typeof val + "\nValue: " + val);
     }
   }
 
-  return obj;
+  return ret;
+}
+
+function encodeToObject(data: Map<Buffer, any>): Record<string, any>
+{
+  const ret: Record<string, any> = {};
+
+  for (const [key, val] of data)
+  {
+    const keyString = tryEncodeHexstring(key);
+
+    if (typeof val === "number")
+    {
+      ret[keyString] = val;
+    }
+    else if (val instanceof Uint8Array)
+    {
+      ret[keyString] = tryEncodeHexstring(val);
+    }
+    else if (val instanceof Array)
+    {
+      ret[keyString] = encodeToArray(val);
+    }
+    else if (val instanceof Map)
+    {
+      ret[keyString] = encodeToObject(val);
+    }
+    else
+    {
+      //throw new Error("Type unhandled: " + typeof val + "\nValue: " + val);
+    }
+  }
+
+  return ret;
+}
+
+function decodeToArray(data: Array<any>): Array<any>
+{
+  const ret = [];
+
+  for (const val of data)
+  {
+    if (typeof val === "number")
+    {
+      ret.push(val);
+    }
+    else if (isString(val))
+    {
+      ret.push(tryDecodeHexstring(val));
+    }
+    else if (val instanceof Array)
+    {
+      ret.push(decodeToArray(val));
+    }
+    else if (val instanceof Object)
+    {
+      ret.push(decodeToMap(val));
+    }
+    else
+    {
+      //throw new Error("Type unhandled: " + typeof val + "\nValue: " + val);
+    }
+  }
+
+  return ret;
+}
+
+function decodeToMap(data: Record<string, any>): Map<Buffer, any>
+{
+  const ret = new Map();
+
+  for (const [key, val] of Object.entries(data))
+  {
+    const keyString = tryDecodeHexstring(key);
+
+    if (typeof val === "number")
+    {
+      ret.set(keyString, val);
+    }
+    else if (isString(val))
+    {
+      ret.set(keyString, tryDecodeHexstring(val));
+    }
+    else if (val instanceof Array)
+    {
+      ret.set(keyString, decodeToArray(val));
+    }
+    else if (val instanceof Object)
+    {
+      ret.set(keyString, decodeToMap(val));
+    }
+    else
+    {
+      //throw new Error("Type unhandled: " + typeof val + "\nValue: " + val);
+    }
+  }
+
+  return ret;
 }
 
 /// End of helper functions
@@ -135,7 +211,7 @@ function main(): void
 
   const loadData = (fileName: string, data: Buffer): void =>
   {
-    let decoded = "";
+    let decoded;
     try
     {
       decoded = bencode.decode(data);
@@ -148,7 +224,7 @@ function main(): void
       return;
     }
 
-    const result = bytearrayToString(Object.assign({}, decoded));
+    const result = encodeToObject(decoded);
     editor.setValue(JSON.stringify(result, null, 3) + "\n");
     editor.gotoLine(0, 0, undefined!);
     editor.scrollToLine(0, undefined!, undefined!, undefined!);
@@ -194,7 +270,7 @@ function main(): void
     try
     {
       const obj = JSON.parse(text);
-      const obj2 = stringToBytearray(obj);
+      const obj2 = decodeToMap(obj);
       data = bencode.encode(obj2);
     }
     catch(e)

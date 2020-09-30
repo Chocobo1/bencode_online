@@ -121,10 +121,10 @@ decode.find = function (chr) {
 decode.dictionary = function () {
   decode.position++
 
-  var dict = {}
+  var dict = new Map()
 
   while (decode.data[decode.position] !== END_OF_TYPE) {
-    dict[decode.buffer()] = decode.next()
+    dict.set(decode.buffer(), decode.next())
   }
 
   decode.position++
