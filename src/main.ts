@@ -1,4 +1,4 @@
-import bencode from 'bencode';
+import bencode from './bencode/index.js';
 import fileSaver from 'file-saver';
 
 import ace from 'ace-builds';
