@@ -1,3 +1,5 @@
+const Buffer = require('buffer/').Buffer;
+
 import bencode from './bencode/index.js';
 import fileSaver from 'file-saver';
 
