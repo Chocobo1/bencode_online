@@ -2,9 +2,10 @@
   "name": "bencode_online",
   "version": "2.0.0",
   "description": "Bencode & bdecode in your browser",
+  "homepage": "https://github.com/Chocobo1/bencode_online",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Chocobo1/bencode_online"
+    "url": "https://github.com/Chocobo1/bencode_online.git"
   },
   "scripts": {
     "build": "webpack --mode production --config webpack.prod.js",
