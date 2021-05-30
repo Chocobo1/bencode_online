@@ -256,14 +256,15 @@ function main(): void
     handleFilesInput(this.files!);
   });
 
-  const openfileButton = document.getElementById("openfileButton")!;
-  openfileButton.addEventListener("click", () => {
+  const onOpenFile = () => {
     const fileInput = document.getElementById('fileInput')!;
     fileInput.click();
-  });
+  };
 
-  const saveBtn = document.getElementById("saveButton")!;
-  saveBtn.addEventListener("click", () => {
+  const openfileButton = document.getElementById("openfileButton")!;
+  openfileButton.addEventListener("click", onOpenFile);
+
+  const onSave = () => {
     const text = editor.getValue();
     if (text.length === 0)
       return;
@@ -283,7 +284,10 @@ function main(): void
 
     const blob = new Blob([data], {type: 'application/octet-stream'});
     fileSaver.saveAs(blob, "file");
-  });
+  };
+
+  const saveBtn = document.getElementById("saveButton")!;
+  saveBtn.addEventListener("click", onSave);
 
   const loadExampleBtn = document.getElementById("loadExampleButton")!;
   loadExampleBtn.addEventListener("click", () => {
@@ -299,6 +303,29 @@ function main(): void
     xreq.open("GET", exampleFileName);
     xreq.responseType = "arraybuffer";
     xreq.send();
+  });
+
+  // shortcuts
+  document.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.defaultPrevented)
+      return;
+
+    if (event.ctrlKey) {
+      switch(event.code) {
+        case "KeyO":
+          onOpenFile();
+          event.preventDefault();
+          break;
+
+        case "KeyS":
+          onSave();
+          event.preventDefault();
+          break;
+
+        default:
+          return;
+      }
+    }
   });
 }
 
