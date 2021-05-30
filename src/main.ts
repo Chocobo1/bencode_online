@@ -2,6 +2,7 @@ const Buffer = require('buffer/').Buffer;
 
 import bencode from './bencode/index.js';
 import fileSaver from 'file-saver';
+import key from 'keymaster';
 
 import ace from 'ace-builds';
 import 'ace-builds/src-min-noconflict/mode-json';
@@ -305,27 +306,15 @@ function main(): void
     xreq.send();
   });
 
-  // shortcuts
-  document.addEventListener("keydown", (event: KeyboardEvent) => {
-    if (event.defaultPrevented)
-      return;
-
-    if (event.ctrlKey) {
-      switch(event.code) {
-        case "KeyO":
-          onOpenFile();
-          event.preventDefault();
-          break;
-
-        case "KeyS":
-          onSave();
-          event.preventDefault();
-          break;
-
-        default:
-          return;
-      }
-    }
+  // keyboard shortcuts
+  key.filter = (event) => { return true };
+  key('ctrl+o, command+o', () => {
+    onOpenFile();
+    return false;
+  });
+  key('ctrl+s, command+s', () => {
+    onSave();
+    return false;
   });
 }
 
