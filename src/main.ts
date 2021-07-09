@@ -19,7 +19,7 @@ function loadFile(blob: Blob): Promise<ArrayBuffer>
 {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (e: any) => { resolve(e.target.result); };
+    reader.onload = () => { resolve(reader.result as ArrayBuffer); };
     reader.readAsArrayBuffer(blob);
   });
 }
@@ -210,7 +210,7 @@ function main(): void
 
   // Characters stop showing up after the 10000th charater in a line
   // https://github.com/ajaxorg/ace/issues/3983
-  (<any> editor.renderer).$textLayer.MAX_LINE_LENGTH=Infinity;
+  (editor.renderer as any).$textLayer.MAX_LINE_LENGTH=Infinity;
 
   const loadData = (fileName: string, data: Buffer): void =>
   {
