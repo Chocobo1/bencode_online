@@ -1,6 +1,7 @@
 const path = require('path');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports =
 {
@@ -13,8 +14,16 @@ module.exports =
     rules:
     [
       {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
         test: /\.tsx?$/,
-        loader: "ts-loader"
+        use: 'ts-loader'
+      },
+      {
+        test: /\.ttf$/,
+        use: 'file-loader'
       }
     ]
   },
@@ -25,9 +34,13 @@ module.exports =
       [
         { from: 'src/index.html' },
         { from: 'src/style.css' },
-        { from: 'node_modules/ace-builds/src-min-noconflict/worker-json.js' },
         { from: 'src/bbb_sunflower_1080p_60fps_normal.mp4.torrent' }
       ]
+    }),
+    new MonacoWebpackPlugin({
+      options: {
+          languages: ['json']
+      }
     })
   ],
   output:

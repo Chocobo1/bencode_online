@@ -4,10 +4,7 @@ import ClipboardJS from 'clipboard';
 import FileSaver from 'file-saver';
 import Key from 'keymaster';
 import LZString from 'lz-string';
-
-import Ace from 'ace-builds';
-import 'ace-builds/src-min-noconflict/mode-json';
-import 'ace-builds/src-min-noconflict/ext-searchbox';
+import * as Monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 /// helper functions
 
@@ -263,20 +260,24 @@ function main(): void
 {
   // editor configs
   const jsonEditor = document.getElementById('jsonEditor')!;
-  const editor = Ace.edit(jsonEditor);
-  editor.getSession().setMode('ace/mode/json');
-  editor.setShowPrintMargin(false);
-  editor.setFontSize("14px");
-
-  // Characters stop showing up after the 10000th charater in a line
-  // https://github.com/ajaxorg/ace/issues/3983
-  (editor.renderer as any).$textLayer.MAX_LINE_LENGTH=Infinity;
+  const editor = Monaco.editor.create(jsonEditor, {
+    automaticLayout: true,
+    fontSize: 14,
+    language: "json",
+    lineDecorationsWidth: 5,
+    lineNumbersMinChars: 3,
+    minimap: {
+      enabled: false
+    },
+    scrollBeyondLastLine: false,
+    stopRenderingLineAfter: -1
+  });
 
   const setEditorValue = (str: string): void =>
   {
     editor.setValue(str);
-    editor.gotoLine(0, 0, undefined!);
-    editor.scrollToLine(0, undefined!, undefined!, undefined!);
+    editor.setPosition({column: 0, lineNumber: 0});
+    editor.revealLine(0);
     editor.focus();
   };
 
