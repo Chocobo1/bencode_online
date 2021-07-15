@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack --mode production --config webpack.prod.js",
-    "start": "webpack-dev-server --mode development --open --config webpack.dev.js"
+    "start": "webpack serve --mode development --open --config webpack.dev.js"
   },
   "author": "Chocobo1",
   "license": "MIT",
