@@ -233,9 +233,7 @@ function main(): void
     }
     catch(e)
     {
-      editor.setValue("Error: "
-        + "\"" + fileName + "\""
-        + " is not a valid bencoded file\n");
+      editor.setValue(`Error: "${fileName}" is not a valid bencoded file\n`);
       return;
     }
 
