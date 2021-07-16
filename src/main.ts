@@ -2,6 +2,7 @@ import Bencode from './bencode/index.js';
 import { Buffer } from 'buffer';
 import FileSaver from 'file-saver';
 import Key from 'keymaster';
+import LZString from "lz-string";
 
 import Ace from 'ace-builds';
 import 'ace-builds/src-min-noconflict/mode-json';
@@ -210,6 +211,38 @@ function decodeToMap(data: Record<string, DecodeInTypes>): Map<Buffer, DecodeOut
 
 /// End of helper functions
 
+class Session
+{
+  constructor(editorText: string)
+  {
+    this.editorText = editorText;
+
+    if (this.editorText.length > 0)
+      this.valid = true;
+  }
+
+  serialize(): string
+  {
+    const object = {
+      "editorText": this.editorText
+    };
+    return LZString.compressToEncodedURIComponent(JSON.stringify(object));
+  }
+
+  static deserialize(compressed: string): Session
+  {
+    const decompressed = LZString.decompressFromEncodedURIComponent(compressed);
+    if (decompressed === null)
+      return new Session("");
+
+    const json = JSON.parse(decompressed);
+    return new Session(json.editorText);
+  }
+
+  editorText = "";
+  valid = false;
+}
+
 function main(): void
 {
   // editor configs
@@ -222,6 +255,14 @@ function main(): void
   // Characters stop showing up after the 10000th charater in a line
   // https://github.com/ajaxorg/ace/issues/3983
   (editor.renderer as any).$textLayer.MAX_LINE_LENGTH=Infinity;
+
+  const setEditorValue = (str: string): void =>
+  {
+    editor.setValue(str);
+    editor.gotoLine(0, 0, undefined!);
+    editor.scrollToLine(0, undefined!, undefined!, undefined!);
+    editor.focus();
+  };
 
   const loadData = (fileName: string, data: Buffer): void =>
   {
@@ -237,10 +278,7 @@ function main(): void
     }
 
     const result = encodeToObject(decoded);
-    editor.setValue(JSON.stringify(result, null, 3) + "\n");
-    editor.gotoLine(0, 0, undefined!);
-    editor.scrollToLine(0, undefined!, undefined!, undefined!);
-    editor.focus();
+    setEditorValue(JSON.stringify(result, null, 3) + "\n");
   };
 
   const handleFilesInput = async (files: FileList): Promise<void> =>
@@ -253,6 +291,12 @@ function main(): void
 
     loadData(fileBlob.name, buf);
   };
+
+  editor.on("change", (_ev) => {
+    const url = new URL(location.href);
+    url.hash = (new Session(editor.getValue())).serialize();
+    history.replaceState(null, "", url.href);
+  });
 
   jsonEditor.addEventListener('dragover', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
   jsonEditor.addEventListener('dragenter', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
@@ -326,6 +370,14 @@ function main(): void
     onSave();
     return false;
   });
+
+  // load data from URI fragment
+  const compressedHash = document.location.hash.slice(1);
+  if (compressedHash.length > 0) {
+    const session = Session.deserialize(compressedHash);
+    if (session.valid)
+      setEditorValue(session.editorText);
+  }
 }
 
 main();
