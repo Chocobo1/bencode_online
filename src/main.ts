@@ -10,7 +10,13 @@ import 'ace-builds/src-min-noconflict/ext-searchbox';
 
 /// helper functions
 
-function isString(s: object): boolean
+// https://github.com/microsoft/TypeScript/pull/33050#issuecomment-543365074
+interface RecordOf<T>
+{
+    [_: string]: T;
+}
+
+function isString(s: any): s is string
 {
   return (Object.prototype.toString.call(s) === "[object String]");
 }
@@ -69,7 +75,10 @@ function tryDecodeHexstring(str: string): Buffer
     : Buffer.from(str);
 }
 
-function encodeToArray(data: Array<any>): Array<any>
+type EncodeInTypes = number | Uint8Array | Array<EncodeInTypes> | Map<any, EncodeInTypes>;
+type EncodeOutTypes = number | string | Array<EncodeOutTypes> | RecordOf<EncodeOutTypes>;
+
+function encodeToArray(data: Array<EncodeInTypes>): Array<EncodeOutTypes>
 {
   const ret = [];
 
@@ -100,9 +109,9 @@ function encodeToArray(data: Array<any>): Array<any>
   return ret;
 }
 
-function encodeToObject(data: Map<Buffer, any>): Record<string, any>
+function encodeToObject(data: Map<Buffer, EncodeInTypes>): Record<string, EncodeOutTypes>
 {
-  const ret: Record<string, any> = {};
+  const ret: ReturnType<typeof encodeToObject> = {};
 
   for (const [key, val] of data)
   {
@@ -133,7 +142,10 @@ function encodeToObject(data: Map<Buffer, any>): Record<string, any>
   return ret;
 }
 
-function decodeToArray(data: Array<any>): Array<any>
+type DecodeInTypes = number | string | Array<DecodeInTypes> | RecordOf<DecodeInTypes>;
+type DecodeOutTypes = Buffer | number | Array<DecodeOutTypes> | Map<any, DecodeOutTypes>;
+
+function decodeToArray(data: Array<DecodeInTypes>): Array<DecodeOutTypes>
 {
   const ret = [];
 
@@ -164,7 +176,7 @@ function decodeToArray(data: Array<any>): Array<any>
   return ret;
 }
 
-function decodeToMap(data: Record<string, any>): Map<Buffer, any>
+function decodeToMap(data: Record<string, DecodeInTypes>): Map<Buffer, DecodeOutTypes>
 {
   const ret = new Map();
 
