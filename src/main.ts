@@ -241,6 +241,7 @@ function main(): void
     editor.setValue(JSON.stringify(result, null, 3) + "\n");
     editor.gotoLine(0, 0, undefined!);
     editor.scrollToLine(0, undefined!, undefined!, undefined!);
+    editor.focus();
   }
 
   const handleFilesInput = async (files: FileList): Promise<void> =>
