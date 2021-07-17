@@ -46,7 +46,7 @@ function tryEncodeHexstring(data: ArrayBuffer): string
     let str = "";
     for (let i = 0; i < hexStr.length; i += 2)
       str += (hexStr.substr(i, 2) + " ");
-    str = ("<hex>" + str.trim() + "</hex>");
+    str = `<hex>${str.trim()}</hex>`;
     return str;
   };
 
