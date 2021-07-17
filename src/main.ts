@@ -1,6 +1,5 @@
-const Buffer = require('buffer/').Buffer;
-
 import Bencode from './bencode/index.js';
+import { Buffer } from 'buffer';
 import FileSaver from 'file-saver';
 import Key from 'keymaster';
 
@@ -23,7 +22,7 @@ function isString(s: any): s is string
 
 function loadFile(blob: Blob): Promise<ArrayBuffer>
 {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     const reader = new FileReader();
     reader.onload = () => { resolve(reader.result as ArrayBuffer); };
     reader.readAsArrayBuffer(blob);
@@ -36,7 +35,7 @@ function tryEncodeHexstring(data: ArrayBuffer): string
   {
     const replacementChar = '\uFFFD';  // U+FFFD REPLACEMENT CHARACTER
     return (str.indexOf(replacementChar) === -1);
-  }
+  };
 
   const encodeToHexstring = (buf: Buffer): string =>
   {
@@ -48,7 +47,7 @@ function tryEncodeHexstring(data: ArrayBuffer): string
       str += (hexStr.substr(i, 2) + " ");
     str = ("<hex>" + str.trim() + "</hex>");
     return str;
-  }
+  };
 
   const str = data.toString();
   return isValidUtf8String(str)
@@ -62,13 +61,13 @@ function tryDecodeHexstring(str: string): Buffer
   {
     const re = /<hex>[0-9a-f ]+<\/hex>/gi;
     return re.test(str);
-  }
+  };
 
   const decodeToBuffer = (hex: string): Buffer =>
   {
     const str = hex.substring(5, (hex.length - 6)).replace(/ /g, "");
     return Buffer.from(str, 'hex');
-  }
+  };
 
   return isHexstring(str)
     ? decodeToBuffer(str)
@@ -242,7 +241,7 @@ function main(): void
     editor.gotoLine(0, 0, undefined!);
     editor.scrollToLine(0, undefined!, undefined!, undefined!);
     editor.focus();
-  }
+  };
 
   const handleFilesInput = async (files: FileList): Promise<void> =>
   {
@@ -253,7 +252,7 @@ function main(): void
     const buf = Buffer.from(await loadFile(fileBlob));
 
     loadData(fileBlob.name, buf);
-  }
+  };
 
   jsonEditor.addEventListener('dragover', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
   jsonEditor.addEventListener('dragenter', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
@@ -290,7 +289,7 @@ function main(): void
     }
     catch(e)
     {
-      alert("Save error:\n" + e.message)
+      alert("Save error:\n" + e.message);
       return;
     }
 
@@ -318,7 +317,7 @@ function main(): void
   });
 
   // keyboard shortcuts
-  Key.filter = (event) => { return true };
+  Key.filter = (_event) => { return true; };
   Key('ctrl+o, command+o', () => {
     onOpenFile();
     return false;

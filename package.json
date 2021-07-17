@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "webpack --mode production --config webpack.prod.js",
+    "lint": "eslint src/main.ts",
     "start": "webpack serve --mode development --open --config webpack.dev.js"
   },
   "author": "Chocobo1",
@@ -22,7 +23,10 @@
   "devDependencies": {
     "@types/file-saver": "^2.0.3",
     "@types/keymaster": "^1.6.30",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
     "copy-webpack-plugin": "^9.0.1",
+    "eslint": "^7.30.0",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.5",
     "webpack": "^5.44.0",
