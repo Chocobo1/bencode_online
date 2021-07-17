@@ -1,10 +1,10 @@
 const Buffer = require('buffer/').Buffer;
 
-import bencode from './bencode/index.js';
-import fileSaver from 'file-saver';
-import key from 'keymaster';
+import Bencode from './bencode/index.js';
+import FileSaver from 'file-saver';
+import Key from 'keymaster';
 
-import ace from 'ace-builds';
+import Ace from 'ace-builds';
 import 'ace-builds/src-min-noconflict/mode-json';
 import 'ace-builds/src-min-noconflict/ext-searchbox';
 
@@ -215,7 +215,7 @@ function main(): void
 {
   // editor configs
   const jsonEditor = document.getElementById('jsonEditor')!;
-  const editor = ace.edit(jsonEditor);
+  const editor = Ace.edit(jsonEditor);
   editor.getSession().setMode('ace/mode/json');
   editor.setShowPrintMargin(false);
   editor.setFontSize("14px");
@@ -229,7 +229,7 @@ function main(): void
     let decoded;
     try
     {
-      decoded = bencode.decode(data);
+      decoded = Bencode.decode(data);
     }
     catch(e)
     {
@@ -286,7 +286,7 @@ function main(): void
     {
       const obj = JSON.parse(text);
       const obj2 = decodeToMap(obj);
-      data = bencode.encode(obj2);
+      data = Bencode.encode(obj2);
     }
     catch(e)
     {
@@ -295,7 +295,7 @@ function main(): void
     }
 
     const blob = new Blob([data], {type: 'application/octet-stream'});
-    fileSaver.saveAs(blob, "file");
+    FileSaver.saveAs(blob, "file");
   };
 
   const saveBtn = document.getElementById("saveButton")!;
@@ -318,12 +318,12 @@ function main(): void
   });
 
   // keyboard shortcuts
-  key.filter = (event) => { return true };
-  key('ctrl+o, command+o', () => {
+  Key.filter = (event) => { return true };
+  Key('ctrl+o, command+o', () => {
     onOpenFile();
     return false;
   });
-  key('ctrl+s, command+s', () => {
+  Key('ctrl+s, command+s', () => {
     onSave();
     return false;
   });
