@@ -1,5 +1,6 @@
 import Bencode from './bencode/index.js';
 import { Buffer } from 'buffer';
+import ClipboardJS from 'clipboard';
 import FileSaver from 'file-saver';
 import Key from 'keymaster';
 import LZString from 'lz-string';
@@ -300,17 +301,6 @@ function main(): void
     handleFilesInput(ev.dataTransfer!.files);
   });
 
-  editor.on("change", async (_ev): Promise<void> => {
-    const getNewURL = async (): Promise<string> => {
-      const url = new URL(location.href);
-      url.hash = (new Session(editor.getValue())).serialize();
-      return url.href;
-    };
-
-    const url = await getNewURL();
-    history.replaceState(null, "", url);
-  });
-
   const fileInput = document.getElementById('fileInput')!;
   fileInput.addEventListener("change", function(this: HTMLInputElement) {
     handleFilesInput(this.files!);
@@ -323,6 +313,25 @@ function main(): void
 
   const openfileButton = document.getElementById("openfileButton")!;
   openfileButton.addEventListener("click", onOpenFile);
+
+  const shareButton = document.getElementById('shareButton')!;
+  const shareButtonText = shareButton.firstChild!.nodeValue;
+  if (ClipboardJS.isSupported()) {
+    const clipboard = new ClipboardJS(shareButton, {
+      text: (_elem) => {
+        const url = new URL(location.href);
+        url.hash = (new Session(editor.getValue())).serialize();
+        history.replaceState(null, "", url.href);
+        return url.href;
+      }
+    });
+
+    clipboard.on('success', async (_e) => {
+      shareButton.firstChild!.nodeValue = "OK!";
+      const _sleep = await new Promise((resolve, _reject) => { setTimeout(resolve, 1500); });
+      shareButton.firstChild!.nodeValue = shareButtonText;
+    });
+  }
 
   const onSave = () => {
     const text = editor.getValue();
