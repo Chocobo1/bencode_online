@@ -292,18 +292,23 @@ function main(): void
     loadData(fileBlob.name, buf);
   };
 
-  editor.on("change", (_ev) => {
-    const url = new URL(location.href);
-    url.hash = (new Session(editor.getValue())).serialize();
-    history.replaceState(null, "", url.href);
-  });
-
   jsonEditor.addEventListener('dragover', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
   jsonEditor.addEventListener('dragenter', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
   jsonEditor.addEventListener("drop", (ev: DragEvent) => {
     if (ev.preventDefault)
       ev.preventDefault();
     handleFilesInput(ev.dataTransfer!.files);
+  });
+
+  editor.on("change", async (_ev): Promise<void> => {
+    const getNewURL = async (): Promise<string> => {
+      const url = new URL(location.href);
+      url.hash = (new Session(editor.getValue())).serialize();
+      return url.href;
+    };
+
+    const url = await getNewURL();
+    history.replaceState(null, "", url);
   });
 
   const fileInput = document.getElementById('fileInput')!;
