@@ -2,7 +2,7 @@ import Bencode from './bencode/index.js';
 import { Buffer } from 'buffer';
 import FileSaver from 'file-saver';
 import Key from 'keymaster';
-import LZString from "lz-string";
+import LZString from 'lz-string';
 
 import Ace from 'ace-builds';
 import 'ace-builds/src-min-noconflict/mode-json';
