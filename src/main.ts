@@ -227,17 +227,23 @@ class Session
     const object = {
       "editorText": this.editorText
     };
-    return LZString.compressToEncodedURIComponent(JSON.stringify(object));
+    // https://github.com/pieroxy/lz-string/pull/127
+    const compressed = LZString.compressToEncodedURIComponent(JSON.stringify(object));
+    return compressed.replace(/\+/g, '_').replace(/\$/g, '.');
   }
 
-  static deserialize(compressed: string): Session
+  static deserialize(encoded: string): Session
   {
-    const decompressed = LZString.decompressFromEncodedURIComponent(compressed);
-    if (decompressed === null)
+    const decoded = encoded.replace(/\./g, '$').replace(/_/g, '+');
+    const decompressed = LZString.decompressFromEncodedURIComponent(decoded);
+    if ((decompressed === null) || (decompressed.length <= 0))
       return new Session("");
 
-    const json = JSON.parse(decompressed);
-    return new Session(json.editorText);
+    const data = JSON.parse(decompressed);
+    if (!Object.prototype.hasOwnProperty.call(data, "editorText"))
+      return new Session("");
+
+    return new Session(data.editorText);
   }
 
   editorText = "";
