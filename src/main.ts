@@ -239,7 +239,16 @@ class Session
     if ((decompressed === null) || (decompressed.length <= 0))
       return new Session("");
 
-    const data = JSON.parse(decompressed);
+    let data;
+    try {
+      data = JSON.parse(decompressed);
+    }
+    catch (exception) {
+      if (!(exception instanceof SyntaxError))
+        alert(exception.message);
+      return new Session("");
+    }
+
     if (!Object.prototype.hasOwnProperty.call(data, "editorText"))
       return new Session("");
 
@@ -351,9 +360,9 @@ function main(): void
       const obj2 = decodeToMap(obj);
       data = Bencode.encode(obj2);
     }
-    catch(e)
+    catch (exception)
     {
-      alert("Save error:\n" + e.message);
+      alert("Save error:\n" + exception.message);
       return;
     }
 
