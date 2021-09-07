@@ -310,15 +310,15 @@ function main(): void
 
   jsonEditor.addEventListener('dragover', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
   jsonEditor.addEventListener('dragenter', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
-  jsonEditor.addEventListener("drop", (ev: DragEvent) => {
+  jsonEditor.addEventListener("drop", async (ev: DragEvent) => {
     if (ev.preventDefault)
       ev.preventDefault();
-    handleFilesInput(ev.dataTransfer!.files);
+    await handleFilesInput(ev.dataTransfer!.files);
   });
 
   const fileInput = document.getElementById('fileInput')!;
-  fileInput.addEventListener("change", function(this: HTMLInputElement) {
-    handleFilesInput(this.files!);
+  fileInput.addEventListener("change", async function(this: HTMLInputElement) {
+    await handleFilesInput(this.files!);
   });
 
   const onOpenFile = () => {
