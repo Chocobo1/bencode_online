@@ -243,7 +243,7 @@ class Session
     try {
       data = JSON.parse(decompressed);
     }
-    catch (exception) {
+    catch (exception: any) {
       if (!(exception instanceof SyntaxError))
         alert(exception.message);
       return new Session("");
@@ -287,7 +287,7 @@ function main(): void
     {
       decoded = Bencode.decode(data);
     }
-    catch(e)
+    catch (_exception)
     {
       editor.setValue(`Error: "${fileName}" is not a valid bencoded file\n`);
       return;
@@ -360,7 +360,7 @@ function main(): void
       const obj2 = decodeToMap(obj);
       data = Bencode.encode(obj2);
     }
-    catch (exception)
+    catch (exception: any)
     {
       alert("Save error:\n" + exception.message);
       return;
