@@ -266,7 +266,7 @@ function main(): void
   const editor = Ace.edit(jsonEditor);
   editor.getSession().setMode('ace/mode/json');
   editor.setShowPrintMargin(false);
-  editor.setFontSize("14px");
+  editor.setFontSize(14);
 
   // Characters stop showing up after the 10000th charater in a line
   // https://github.com/ajaxorg/ace/issues/3983
