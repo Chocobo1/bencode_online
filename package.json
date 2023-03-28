@@ -15,7 +15,7 @@
   "author": "Chocobo1",
   "license": "MIT",
   "dependencies": {
-    "ace-builds": "^1.15.3",
+    "ace-builds": "^1.16.0",
     "buffer": "^6.0.3",
     "clipboard": "^2.0.11",
     "file-saver": "^2.0.5",
@@ -25,17 +25,16 @@
   "devDependencies": {
     "@types/file-saver": "^2.0.5",
     "@types/keymaster": "^1.6.30",
-    "@types/lz-string": "^1.3.34",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "copy-webpack-plugin": "^11.0.0",
     "eslint": "*",
     "html-validate": "*",
     "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
-    "webpack": "^5.75.0",
+    "typescript": "^5.0.2",
+    "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1",
+    "webpack-dev-server": "^4.13.1",
     "webpack-merge": "^5.8.0"
   }
 }
