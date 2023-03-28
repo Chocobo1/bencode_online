@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack --mode production --config webpack.prod.js",
-    "lint": "eslint src/main.ts",
+    "lint": "eslint src/main.ts && html-validate src/*.html",
     "serve": "webpack serve --mode development --open --config webpack.dev.js"
   },
   "author": "Chocobo1",
@@ -30,6 +30,7 @@
     "@typescript-eslint/parser": "*",
     "copy-webpack-plugin": "^11.0.0",
     "eslint": "*",
+    "html-validate": "*",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.5",
     "webpack": "^5.75.0",
