@@ -210,6 +210,24 @@ function decodeToMap(data: Record<string, DecodeInTypes>): Map<Buffer, DecodeOut
   return ret;
 }
 
+function isTorrent(data: any): boolean
+{
+  if (typeof data !== 'object')
+    return false;
+
+  if (!Object.prototype.hasOwnProperty.call(data, 'info'))
+    return false;
+
+  // v2 format
+  if (Object.prototype.hasOwnProperty.call(data, 'piece layers'))
+    return true;
+
+  // v1 format
+  const info = data['info'];
+  const count: number = Number(Object.prototype.hasOwnProperty.call(info, 'files')) + Number(Object.prototype.hasOwnProperty.call(info, 'length'));
+  return (count === 1);
+}
+
 /// End of helper functions
 
 class Session
@@ -353,10 +371,11 @@ function main(): void
     if (text.length === 0)
       return;
 
+    let obj: any;
     let data: Buffer;
     try
     {
-      const obj = JSON.parse(text);
+      obj = JSON.parse(text);
       const obj2 = decodeToMap(obj);
       data = Bencode.encode(obj2);
     }
@@ -367,7 +386,8 @@ function main(): void
     }
 
     const blob = new Blob([data], {type: 'application/octet-stream'});
-    FileSaver.saveAs(blob, "file");
+    const filename = (isTorrent(obj) && Object.prototype.hasOwnProperty.call(obj['info'], 'name')) ? `${obj['info']['name']}.torrent` : "bencoded_data";
+    FileSaver.saveAs(blob, filename);
   };
 
   const saveBtn = document.getElementById("saveButton")!;
