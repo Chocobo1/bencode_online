@@ -286,9 +286,7 @@ function main(): void
   editor.setShowPrintMargin(false);
   editor.setFontSize(14);
 
-  // Characters stop showing up after the 10000th charater in a line
-  // https://github.com/ajaxorg/ace/issues/3983
-  //(editor.renderer as any).$textLayer.MAX_LINE_LENGTH=Infinity;
+  (editor.renderer as any).$textLayer.MAX_LINE_LENGTH=512;
 
   const setEditorValue = (str: string): void =>
   {
