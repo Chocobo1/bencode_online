@@ -281,10 +281,23 @@ function main(): void
 {
   // editor configs
   const jsonEditor = document.getElementById('jsonEditor')!;
-  const editor = Ace.edit(jsonEditor);
-  editor.getSession().setMode('ace/mode/json');
-  editor.setShowPrintMargin(false);
-  editor.setFontSize(14);
+  const editor = Ace.edit(jsonEditor, {
+    fontSize: 14,
+    mode: 'ace/mode/json',
+    showPrintMargin: false
+  });
+
+/*
+  // adjust theme
+  const setTheme = (isDarkTheme: boolean): void => {
+    editor.setTheme(isDarkTheme ? 'ace/theme/idle_fingers' : 'ace/theme/textmate');
+  };
+  const isDarkThemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  setTheme(isDarkThemeQuery.matches);
+  isDarkThemeQuery.addEventListener('change', event => {
+    setTheme(event.matches);
+  });
+*/
 
   (editor.renderer as any).$textLayer.MAX_LINE_LENGTH=512;
 

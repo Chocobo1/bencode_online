@@ -25,6 +25,7 @@ module.exports =
       [
         { from: 'src/index.html' },
         { from: 'src/style.css' },
+        //{ from: 'node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js' },
         { from: 'node_modules/ace-builds/src-min-noconflict/worker-json.js' },
         { from: 'src/bbb_sunflower_1080p_60fps_normal.mp4.torrent' }
       ]
