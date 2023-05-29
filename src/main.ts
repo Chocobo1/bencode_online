@@ -36,7 +36,7 @@ function tryEncodeHexstring(data: ArrayBuffer): string
   const isValidUtf8String = (str: string): boolean =>
   {
     const replacementChar = '\uFFFD';  // U+FFFD REPLACEMENT CHARACTER
-    return (str.indexOf(replacementChar) === -1);
+    return !str.includes(replacementChar);
   };
 
   const encodeToHexstring = (buf: Buffer): string =>
@@ -44,10 +44,10 @@ function tryEncodeHexstring(data: ArrayBuffer): string
     // example: <hex>0A 0B 0C ...</hex>
     const hexStr = buf.toString('hex').toUpperCase();
 
-    let str = "";
+    let str = "<hex>";
     for (let i = 0; i < hexStr.length; i += 2)
       str += (hexStr.substr(i, 2) + " ");
-    str = `<hex>${str.trim()}</hex>`;
+    str = `${str.trimEnd()}</hex>`;
     return str;
   };
 
