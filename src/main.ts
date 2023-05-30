@@ -406,7 +406,7 @@ function main(): void
 
   const loadExampleBtn = document.getElementById("loadExampleButton")!;
   loadExampleBtn.addEventListener("click", () => {
-    const exampleFileName = "bbb_sunflower_1080p_60fps_normal.mp4.torrent";
+    const exampleFileName = "assets/bbb_sunflower_1080p_60fps_normal.mp4.torrent";
 
     const xreq = new XMLHttpRequest();
     xreq.onreadystatechange = () => {

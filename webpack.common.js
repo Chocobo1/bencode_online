@@ -23,17 +23,20 @@ module.exports =
     new CopyWebpackPlugin({
       patterns:
       [
+        //{ from: 'node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js', to: 'js' },
+        { from: 'node_modules/ace-builds/src-min-noconflict/worker-json.js', to: 'js' },
+        { from: 'src/assets/bootstrap.min.css', to: 'css' },
+        { from: 'src/assets/bootstrap.min.js', to: 'js' },
+        { from: 'src/assets/github.svg', to: 'assets' },
+        { from: 'src/bbb_sunflower_1080p_60fps_normal.mp4.torrent', to: 'assets' },
         { from: 'src/index.html' },
-        { from: 'src/style.css' },
-        //{ from: 'node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js' },
-        { from: 'node_modules/ace-builds/src-min-noconflict/worker-json.js' },
-        { from: 'src/bbb_sunflower_1080p_60fps_normal.mp4.torrent' }
+        { from: 'src/style.css', to: 'css' }
       ]
     })
   ],
   output:
   {
-    filename: 'main.js',
+    filename: 'js/main.js',
     path: path.resolve(__dirname, 'dist')
   },
 };

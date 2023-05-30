@@ -1,2 +1,5 @@
-node_modules/*
 dist/*
+node_modules/*
+src/assets/*
+!src/assets/fetch.sh
+!src/assets/*.torrent
