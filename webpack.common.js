@@ -23,7 +23,7 @@ module.exports =
     new CopyWebpackPlugin({
       patterns:
       [
-        //{ from: 'node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js', to: 'js' },
+        { from: 'node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js', to: 'js' },
         { from: 'node_modules/ace-builds/src-min-noconflict/worker-json.js', to: 'js' },
         { from: 'src/assets/bootstrap.min.css', to: 'css' },
         { from: 'src/assets/bootstrap.min.js', to: 'js' },

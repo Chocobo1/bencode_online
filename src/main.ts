@@ -287,9 +287,9 @@ function main(): void
     showPrintMargin: false
   });
 
-/*
   // adjust theme
   const setTheme = (isDarkTheme: boolean): void => {
+    document.documentElement.setAttribute('data-bs-theme', (isDarkTheme ? 'dark' : 'light'));
     editor.setTheme(isDarkTheme ? 'ace/theme/idle_fingers' : 'ace/theme/textmate');
   };
   const isDarkThemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -297,7 +297,6 @@ function main(): void
   isDarkThemeQuery.addEventListener('change', event => {
     setTheme(event.matches);
   });
-*/
 
   (editor.renderer as any).$textLayer.MAX_LINE_LENGTH=512;
 

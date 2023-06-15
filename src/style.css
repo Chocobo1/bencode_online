@@ -1,3 +1,9 @@
+@media (prefers-color-scheme: dark) {
+  #githubLogo {
+    filter: invert(100%);
+  }
+}
+
 a {
   text-decoration: none;
 }
