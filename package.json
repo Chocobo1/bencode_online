@@ -8,9 +8,9 @@
     "url": "https://github.com/Chocobo1/bencode_online.git"
   },
   "scripts": {
-    "build": "webpack --mode production --config webpack.prod.js",
+    "build": "webpack --mode production --config webpack.prod.mjs",
     "lint": "eslint src/main.ts && html-validate src/*.html",
-    "serve": "webpack serve --mode development --open --config webpack.dev.js"
+    "serve": "webpack serve --mode development --open --config webpack.dev.mjs"
   },
   "author": "Chocobo1",
   "license": "MIT",

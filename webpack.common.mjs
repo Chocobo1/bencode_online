@@ -1,8 +1,11 @@
-const path = require('path');
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import Path from 'path';
+import Url from 'url';
 
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const __filename = Url.fileURLToPath(import.meta.url);
+const __dirname = Path.dirname(__filename);
 
-module.exports =
+export default
 {
   entry:
   {
@@ -37,6 +40,6 @@ module.exports =
   output:
   {
     filename: 'js/main.js',
-    path: path.resolve(__dirname, 'dist')
+    path: Path.resolve(__dirname, 'dist')
   },
 };

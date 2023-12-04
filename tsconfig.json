@@ -2,10 +2,10 @@
     "compilerOptions":
     {
         "esModuleInterop": true,
-        "moduleResolution": "Node",
+        "module": "nodenext",
         "noImplicitAny": true,
-        "strict": true,
         "removeComments": true,
+        "strict": true,
         "target": "ES6"
     }
 }
