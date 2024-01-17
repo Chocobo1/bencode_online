@@ -181,8 +181,12 @@ function decodeToMap(data: Record<string, DecodeInTypes>): Map<Buffer, DecodeOut
 {
   const ret = new Map();
 
-  for (const [key, val] of Object.entries(data))
+  for (const key in data)
   {
+    if (!Object.hasOwn(data, key))
+      continue;
+
+    const val = data[key];
     const keyString = tryDecodeHexstring(key);
 
     if (typeof val === "number")

@@ -6,6 +6,6 @@
         "noImplicitAny": true,
         "removeComments": true,
         "strict": true,
-        "target": "ES6"
+        "target": "ES2022"
     }
 }
