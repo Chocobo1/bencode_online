@@ -12,7 +12,7 @@ import 'ace-builds/src-min-noconflict/ext-searchbox';
 /// helper functions
 
 // https://github.com/microsoft/TypeScript/pull/33050#issuecomment-543365074
-interface RecordOf<T>
+interface RecordOf<T>  // eslint-disable-line @typescript-eslint/consistent-indexed-object-style
 {
     [_: string]: T;
 }
@@ -51,7 +51,7 @@ function tryEncodeHexstring(data: ArrayBuffer): string
     return str;
   };
 
-  const str = data.toString();
+  const str = data.toString();  // eslint-disable-line @typescript-eslint/no-base-to-string
   return isValidUtf8String(str)
     ? str
     : encodeToHexstring(Buffer.from(data));
@@ -76,10 +76,10 @@ function tryDecodeHexstring(str: string): Buffer
     : Buffer.from(str);
 }
 
-type EncodeInTypes = number | Uint8Array | Array<EncodeInTypes> | Map<any, EncodeInTypes>;
-type EncodeOutTypes = number | string | Array<EncodeOutTypes> | RecordOf<EncodeOutTypes>;
+type EncodeInTypes = number | Uint8Array | EncodeInTypes[] | Map<any, EncodeInTypes>;
+type EncodeOutTypes = number | string | EncodeOutTypes[] | RecordOf<EncodeOutTypes>;
 
-function encodeToArray(data: Array<EncodeInTypes>): Array<EncodeOutTypes>
+function encodeToArray(data: EncodeInTypes[]): EncodeOutTypes[]
 {
   const ret = [];
 
@@ -143,10 +143,10 @@ function encodeToObject(data: Map<Buffer, EncodeInTypes>): Record<string, Encode
   return ret;
 }
 
-type DecodeInTypes = number | string | Array<DecodeInTypes> | RecordOf<DecodeInTypes>;
-type DecodeOutTypes = Buffer | number | Array<DecodeOutTypes> | Map<any, DecodeOutTypes>;
+type DecodeInTypes = number | string | DecodeInTypes[] | RecordOf<DecodeInTypes>;
+type DecodeOutTypes = Buffer | number | DecodeOutTypes[] | Map<any, DecodeOutTypes>;
 
-function decodeToArray(data: Array<DecodeInTypes>): Array<DecodeOutTypes>
+function decodeToArray(data: DecodeInTypes[]): DecodeOutTypes[]
 {
   const ret = [];
 
@@ -227,7 +227,7 @@ function isTorrent(data: any): boolean
     return true;
 
   // v1 format
-  const info = data['info'];
+  const info = data.info;
   const count: number = Number(Object.prototype.hasOwnProperty.call(info, 'files')) + Number(Object.prototype.hasOwnProperty.call(info, 'length'));
   return (count === 1);
 }
@@ -258,7 +258,7 @@ class Session
   {
     const decoded = encoded.replace(/\./g, '$').replace(/_/g, '+');
     const decompressed = LZString.decompressFromEncodedURIComponent(decoded);
-    if ((decompressed === null) || (decompressed.length <= 0))
+    if ((decompressed === null) || (decompressed.length <= 0))  // eslint-disable-line @typescript-eslint/no-unnecessary-condition
       return new Session("");
 
     let data;
@@ -344,11 +344,10 @@ function main(): void
     loadData(fileBlob.name, buf);
   };
 
-  jsonEditor.addEventListener('dragover', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
-  jsonEditor.addEventListener('dragenter', (ev: DragEvent) => { if (ev.preventDefault) ev.preventDefault(); });
+  jsonEditor.addEventListener('dragover', (ev: DragEvent) => { ev.preventDefault(); });
+  jsonEditor.addEventListener('dragenter', (ev: DragEvent) => { ev.preventDefault(); });
   jsonEditor.addEventListener("drop", async (ev: DragEvent) => {
-    if (ev.preventDefault)
-      ev.preventDefault();
+    ev.preventDefault();
     await handleFilesInput(ev.dataTransfer!.files);
   });
 
@@ -399,12 +398,12 @@ function main(): void
     }
     catch (exception: any)
     {
-      alert("Save error:\n" + exception.message);
+      alert(`Save error:\n${exception.message}`);
       return;
     }
 
     const blob = new Blob([data], {type: 'application/octet-stream'});
-    const filename = (isTorrent(obj) && Object.prototype.hasOwnProperty.call(obj['info'], 'name')) ? `${obj['info']['name']}.torrent` : "bencoded_data";
+    const filename = (isTorrent(obj) && Object.prototype.hasOwnProperty.call(obj.info, 'name')) ? `${obj.info.name}.torrent` : "bencoded_data";
     FileSaver.saveAs(blob, filename);
   };
 
