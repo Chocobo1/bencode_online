@@ -1,8 +1,5 @@
 {
   "extends": [
     "html-validate:recommended"
-  ],
-  "rules": {
-    "wcag/h32": "off"
-  }
+  ]
 }

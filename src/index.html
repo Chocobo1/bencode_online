@@ -28,23 +28,19 @@
     </nav>
 
     <div class="container">
-      <form>
-        <div>
-          <label>
-          Bencoded structure represented in JSON format:
-          </label>
-          <div id="jsonEditor"></div> <!--class="form-control"-->
-        </div>
+      <div>
+        <label for="jsonEditor">Bencoded structure represented in JSON format:</label>
+        <div id="jsonEditor"></div> <!--class="form-control"-->
+      </div>
 
-        <div class="row">
-          <div class="btn-group" role="group" aria-label="buttons group">
-            <button type="button" class="btn btn-primary" id="openfileButton">Open file...</button>
-            <button type="button" class="btn btn-primary" id="shareButton">Copy share link</button>
-            <button type="button" class="btn btn-primary" id="saveButton">Save (bencode it)</button>
-            <input type="file" id="fileInput" hidden>
-          </div>
+      <div class="row">
+        <div class="btn-group" role="group" aria-label="buttons group">
+          <button type="button" class="btn btn-primary" id="openfileButton">Open file...</button>
+          <button type="button" class="btn btn-primary" id="shareButton">Copy share link</button>
+          <button type="button" class="btn btn-primary" id="saveButton">Save (bencode it)</button>
+          <input type="file" id="fileInput" hidden>
         </div>
-      </form>
+      </div>
 
       <br>
 
