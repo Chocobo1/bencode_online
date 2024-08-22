@@ -298,11 +298,15 @@ function main(): void
   };
   const isDarkThemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
   setTheme(isDarkThemeQuery.matches);
-  isDarkThemeQuery.addEventListener('change', event => {
+  isDarkThemeQuery.addEventListener('change', (event) => {
     setTheme(event.matches);
   });
 
   (editor.renderer as any).$textLayer.MAX_LINE_LENGTH=512;
+  // disable scroll chaining
+  editor.container.addEventListener("wheel", (event) => {
+    event.preventDefault();
+  });
 
   const setEditorValue = (str: string): void =>
   {
