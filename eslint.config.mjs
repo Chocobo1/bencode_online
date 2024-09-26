@@ -1,5 +1,5 @@
 import ESLint from '@eslint/js';
-import Stylistic from '@stylistic/eslint-plugin-ts';
+import Stylistic from '@stylistic/eslint-plugin';
 import TsESLint from 'typescript-eslint';
 
 export default [

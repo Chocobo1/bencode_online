@@ -1,7 +1,7 @@
 import Bencode from './bencode/index.js';
 import { Buffer } from 'buffer';
 import ClipboardJS from 'clipboard';
-import FileSaver from 'file-saver';
+import * as FileSaver from 'file-saver';
 import Key from 'keymaster';
 import LZString from 'lz-string';
 
@@ -46,7 +46,7 @@ function tryEncodeHexstring(data: ArrayBuffer): string
 
     let str = "<hex>";
     for (let i = 0; i < hexStr.length; i += 2)
-      str += (hexStr.substr(i, 2) + " ");
+      str += `${hexStr.slice(i, (i + 2))} `;
     str = `${str.trimEnd()}</hex>`;
     return str;
   };
