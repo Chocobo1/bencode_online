@@ -411,19 +411,17 @@ function main(): void
   saveBtn.addEventListener("click", onSave);
 
   const loadExampleBtn = document.getElementById("loadExampleButton")!;
-  loadExampleBtn.addEventListener("click", () => {
+  loadExampleBtn.addEventListener("click", (_event) => {
     const exampleFileName = "assets/bbb_sunflower_1080p_60fps_normal.mp4.torrent";
 
-    const xreq = new XMLHttpRequest();
-    xreq.onreadystatechange = () => {
-      if ((xreq.readyState !== XMLHttpRequest.DONE) || (xreq.status !== 200))
-        return;
+    void fetch(exampleFileName, {method: "GET"})
+      .then(async (response) => {
+          if (!response.ok)
+              return;
 
-      loadData(exampleFileName, xreq.response);
-    };
-    xreq.open("GET", exampleFileName);
-    xreq.responseType = "arraybuffer";
-    xreq.send();
+          const data = Buffer.from(await response.arrayBuffer());
+          loadData(exampleFileName, data);
+      });
   });
 
   // keyboard shortcuts
