@@ -15,7 +15,7 @@
   "author": "Chocobo1",
   "license": "MIT",
   "dependencies": {
-    "ace-builds": "^1.36.5",
+    "ace-builds": "^1.42.0",
     "buffer": "^6.0.3",
     "clipboard": "^2.0.11",
     "file-saver": "^2.0.5",
@@ -23,20 +23,20 @@
     "lz-string": "^1.5.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.15.0",
-    "@stylistic/eslint-plugin": "^2.11.0",
+    "@eslint/js": "^9.28.0",
+    "@stylistic/eslint-plugin": "^4.4.1",
     "@types/file-saver": "^2.0.7",
     "@types/keymaster": "^1.6.33",
-    "@types/node": "^22.10.1",
-    "copy-webpack-plugin": "^12.0.2",
-    "eslint": "^9.15.0",
-    "html-validate": "^8.26.0",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.16.0",
-    "webpack": "^5.96.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.1.0",
+    "@types/node": "^22.15.29",
+    "copy-webpack-plugin": "^13.0.0",
+    "eslint": "^9.28.0",
+    "html-validate": "^9.5.5",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2",
     "webpack-merge": "^6.0.1"
   }
 }
