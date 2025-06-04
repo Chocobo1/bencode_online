@@ -311,8 +311,8 @@ function main(): void
   const setEditorValue = (str: string): void =>
   {
     editor.setValue(str);
-    editor.gotoLine(0, 0, undefined!);
-    editor.scrollToLine(0, undefined!, undefined!, undefined!);
+    editor.gotoLine(0, 0);
+    editor.scrollToLine(0, false, false);
     editor.focus();
   };
 

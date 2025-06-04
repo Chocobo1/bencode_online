@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack --mode production --config webpack.prod.mjs",
-    "lint": "eslint src/main.ts && html-validate src/*.html",
+    "lint": "eslint --cache src/main.ts && html-validate src/*.html",
     "serve": "webpack serve --mode development --open --config webpack.dev.mjs"
   },
   "author": "Chocobo1",
