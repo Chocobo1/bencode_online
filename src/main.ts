@@ -31,7 +31,7 @@ function loadFile(blob: Blob): Promise<ArrayBuffer>
   });
 }
 
-function tryEncodeHexstring(data: ArrayBuffer): string
+function tryEncodeHexstring(data: Uint8Array): string
 {
   const isValidUtf8String = (str: string): boolean =>
   {
@@ -51,7 +51,7 @@ function tryEncodeHexstring(data: ArrayBuffer): string
     return str;
   };
 
-  const str = data.toString();  // eslint-disable-line @typescript-eslint/no-base-to-string
+  const str = data.toString();
   return isValidUtf8String(str)
     ? str
     : encodeToHexstring(Buffer.from(data));
