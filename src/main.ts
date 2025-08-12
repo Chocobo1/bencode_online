@@ -402,7 +402,7 @@ function main(): void
       return;
     }
 
-    const blob = new Blob([data], {type: 'application/octet-stream'});
+    const blob = new Blob([data.buffer as ArrayBuffer], {type: 'application/octet-stream'});
     const filename = (isTorrent(obj) && Object.prototype.hasOwnProperty.call(obj.info, 'name')) ? `${obj.info.name}.torrent` : "bencoded_data";
     FileSaver.saveAs(blob, filename);
   };
