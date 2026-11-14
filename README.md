@@ -8,7 +8,7 @@ Then do:
 ```shell
 cd <project_directory>
 src/assets/fetch.sh
-npm install
+npm ci
 npm run build
 ```
 
